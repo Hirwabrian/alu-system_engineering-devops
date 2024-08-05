@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Fix  container so that Nginx is running as the nginx user.
+
+# Switch to the Nginx user
+usermod -u 101 nginx
+groupmod -g 101 nginx
+
+# Modify the Nginx configuration to listen on port 8080
+sed -i 's/listen 80;/listen 8080;/' /etc/nginx/sites-available/default
+
+# Ensure Nginx is running as the Nginx user
+sed -i 's/user www-data;/user nginx;/' /etc/nginx/nginx.conf
+
+# Restart Nginx to apply changes
+service nginx restart
